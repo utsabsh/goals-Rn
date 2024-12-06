@@ -10,6 +10,9 @@ import {
 
 export default function GoalInput(props) {
   const [enteredGoalText, setEnteredGoalText] = useState("");
+
+
+
   function goalInputHandler(enteredText) {
     setEnteredGoalText(enteredText);
   }
@@ -17,6 +20,7 @@ export default function GoalInput(props) {
     props.onAddGoal(enteredGoalText);
     setEnteredGoalText("");
   }
+  
   return (
     <Modal visible={props.visible} animationType="slide">
       <View style={styles.inputContainer}>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, FlatList, StyleSheet, TextInput, View } from "react-native";
 import GoalItem from "./components/GoalItem";
 import GoalInput from "./components/GoalInput";
@@ -8,6 +8,7 @@ export default function App() {
   const [modalIsVisible, setModalIsVisible] = useState(false);
   const [courseGoals, setCourseGoals] = useState([]);
 
+  let lenghtOfArray;
   function startAddHandler() {
     setModalIsVisible(true);
   }
@@ -16,19 +17,20 @@ export default function App() {
   }
 
   function addGoalHandler(enteredGoalText) {
-    setCourseGoals((currentCourseGoals) => [
-      ...currentCourseGoals,
-      { text: enteredGoalText, key: Math.random().toString() },
-    ]);
+    console.warn(enteredGoalText);
+
+    setCourseGoals([...courseGoals,enteredGoalText]);
     endAddHandler();
   }
-  function deleteGoalHandler(id) {
-    console.log(id, "id");
-
-    setCourseGoals((currentCourseGoals) => {
-      return currentCourseGoals.filter((goal) => goal.key !== id);
-    });
+  function deleteGoalHandler(id) {}
+  function editGoalHanlder(id, editedText) {
+    const cpyCourseGoals=courseGoals.splice(id + 1, 0, editedText);
+    setCourseGoals([...courseGoals,cpyCourseGoals])
   }
+  useEffect(() => {
+    lenghtOfArray = courseGoals.length;
+    console.warn(courseGoals, courseGoals.length);
+  }, [courseGoals]);
 
   return (
     <>
@@ -49,12 +51,15 @@ export default function App() {
           <FlatList
             data={courseGoals}
             windowSize={10}
-            renderItem={(itemData) => {
+            renderItem={({ item, index }) => {
               return (
                 <GoalItem
-                  id={itemData.item.key}
-                  itemData={itemData.item}
+                  itemData={item}
                   onDeleteItem={deleteGoalHandler}
+                  index={index}
+                  key={index}
+                  onEditedItem={editGoalHanlder}
+                  lenght={lenghtOfArray}
                 />
               );
             }}
@@ -96,7 +101,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   goalContainer: {
-    flex: 5,
+    flex: 4,
   },
   goalItem: {
     margin: 8,
