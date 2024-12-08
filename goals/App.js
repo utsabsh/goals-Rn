@@ -22,10 +22,12 @@ export default function App() {
     setCourseGoals([...courseGoals,enteredGoalText]);
     endAddHandler();
   }
-  function deleteGoalHandler(id) {}
-  function editGoalHanlder(id, editedText) {
-    const cpyCourseGoals=courseGoals.splice(id + 1, 0, editedText);
-    setCourseGoals([...courseGoals,cpyCourseGoals])
+  function deleteGoalHandler(id) {
+    console.log(id, "id");
+
+    setCourseGoals((currentCourseGoals) => {
+      return currentCourseGoals.filter((goal) => goal.key !== id);
+    });
   }
   useEffect(() => {
     lenghtOfArray = courseGoals.length;
